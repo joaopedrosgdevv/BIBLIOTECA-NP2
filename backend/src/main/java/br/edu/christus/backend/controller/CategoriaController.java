@@ -1,6 +1,8 @@
 package br.edu.christus.backend.controller;
 
 import java.util.List;
+import br.edu.christus.backend.domain.dto.CategoriaLowDTO;
+import br.edu.christus.backend.domain.dto.CategoriaDTO;
 import br.edu.christus.backend.domain.model.Categoria;
 import br.edu.christus.backend.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,6 @@ public class CategoriaController {
 
     @Autowired
     private CategoriaService service;
-
-    @PostMapping
-    public Categoria create(@RequestBody Categoria categoria) {
-        return service.create(categoria);
-    }
 
     @GetMapping
     public List<Categoria> findAll() {
@@ -39,6 +36,11 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @PostMapping
+    public CategoriaLowDTO create(@RequestBody CategoriaDTO dto) {
+        return service.create(dto);
     }
 
 
