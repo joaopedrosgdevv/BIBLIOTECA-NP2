@@ -1,6 +1,9 @@
 package br.edu.christus.backend.service;
 
 import java.util.List;
+import br.edu.christus.backend.domain.dto.CategoriaLowDTO;
+import br.edu.christus.backend.domain.dto.CategoriaDTO;
+import br.edu.christus.backend.util.MapperUtil;
 import br.edu.christus.backend.domain.model.Categoria;
 import br.edu.christus.backend.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,21 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository repository;
 
-    public Categoria create(Categoria categoria) {
-        return repository.save(categoria);
-    }
+    public CategoriaLowDTO create(CategoriaDTO dto) {
 
+        if (repository.existsByCodigo(dto.getCodigo())) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Já existe uma categoria com esse código"
+            );
+        }
+
+        Categoria categoria = MapperUtil.parseObject(dto, Categoria.class);
+
+        Categoria categoriaSalva = repository.save(categoria);
+
+        return MapperUtil.parseObject(categoriaSalva, CategoriaLowDTO.class);
+    }
     public List<Categoria> findAll() {
         return repository.findAll();
     }
@@ -30,8 +44,16 @@ public class CategoriaService {
                 ));
     }
 
+
     public Categoria update(Long id, Categoria dados) {
         Categoria categoria = findById(id);
+
+        if (repository.existsByCodigoAndIdNot(dados.getCodigo(), id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Já existe outra categoria com esse código"
+            );
+        }
 
         categoria.setNome(dados.getNome());
         categoria.setDescricao(dados.getDescricao());
