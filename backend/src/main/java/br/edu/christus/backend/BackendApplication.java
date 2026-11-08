@@ -8,12 +8,17 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
 		info = @Info(
-				title = "Documentação API - Tópicos Especiais Dev. Web",
+				title = "Biblioteca Pública Virtual - API REST",
 				version = "1.0",
-				description = "API construída em Sala",
+				description = "API REST desenvolvida para a NP2 da disciplina "
+						+ "Tópicos Especiais em Desenvolvimento Web. "
+						+ "Sistema de biblioteca virtual para uma escola de ensino médio, "
+						+ "com gerenciamento de livros, autores, categorias, editoras "
+						+ "e materiais didáticos, incluindo busca de materiais por título.",
 				contact = @Contact(
-						name = "Adriano",
-						email = "adriano.candido@unichristus.edu.br",
+						name = "joão pedro e itiel",
+						email = "marcositielgomes@gmail.com",
+
 						url = "https://www.unichristus.edu.br")
 		)
 )
