@@ -1,3 +1,4 @@
+
 package br.edu.christus.backend.repository;
 
 import br.edu.christus.backend.domain.model.Livro;
@@ -9,22 +10,25 @@ import java.util.Optional;
 
 public interface LivroRepository extends JpaRepository<Livro, Long> {
 
-    // VERIFICAR SE O ISBN JÁ EXISTE
+    // Verificar se o ISBN já existe
     boolean existsByIsbn(String isbn);
 
-    // VERIFICAR ISBN DUPLICADO NA ATUALIZAÇÃO
+    // Verificar ISBN duplicado na atualização
     boolean existsByIsbnAndIdNot(String isbn, Long id);
 
-    // VERIFICAR SE UM AUTOR ESTÁ ASSOCIADO A ALGUM LIVRO
+    // Verificar se um autor está associado a algum livro
     boolean existsByAutores_Id(Long autorId);
 
-    // LISTAR LIVROS CARREGANDO CATEGORIA E AUTORES
+    // Verificar se uma editora está associada a algum livro
+    boolean existsByEditoraId(Long editoraId);
+
+    // Listar livros carregando os relacionamentos
     @Override
-    @EntityGraph(attributePaths = {"categoria", "autores"})
+    @EntityGraph(attributePaths = {"categoria", "autores", "editora"})
     List<Livro> findAll();
 
-    // BUSCAR LIVRO POR ID CARREGANDO CATEGORIA E AUTORES
+    // Buscar livro por ID carregando os relacionamentos
     @Override
-    @EntityGraph(attributePaths = {"categoria", "autores"})
+    @EntityGraph(attributePaths = {"categoria", "autores", "editora"})
     Optional<Livro> findById(Long id);
 }

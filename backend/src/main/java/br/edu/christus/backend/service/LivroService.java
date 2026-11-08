@@ -10,6 +10,7 @@ import br.edu.christus.backend.domain.dto.LivroDTO;
 import br.edu.christus.backend.domain.dto.LivroLowDTO;
 import br.edu.christus.backend.domain.model.Autor;
 import br.edu.christus.backend.domain.model.Categoria;
+import br.edu.christus.backend.domain.model.Editora;
 import br.edu.christus.backend.domain.model.Livro;
 import br.edu.christus.backend.repository.AutorRepository;
 import br.edu.christus.backend.repository.CategoriaRepository;
@@ -32,6 +33,9 @@ public class LivroService {
     @Autowired
     private AutorRepository autorRepository;
 
+    @Autowired
+    private EditoraService editoraService;
+
     // CADASTRAR LIVRO
     public LivroLowDTO create(LivroDTO dados) {
 
@@ -48,6 +52,11 @@ public class LivroService {
             );
         }
 
+        Editora editora = null;
+        if (dados.getEditoraId() != null) {
+            editora = editoraService.findById(dados.getEditoraId());
+        }
+
         Livro livro = new Livro();
 
         livro.setTitulo(dados.getTitulo());
@@ -56,6 +65,7 @@ public class LivroService {
         livro.setQuantidadeDisponivel(dados.getQuantidadeDisponivel());
         livro.setCategoria(categoria);
         livro.setAutores(autores);
+        livro.setEditora(editora);
 
         Livro livroSalvo = repository.save(livro);
 
@@ -101,12 +111,18 @@ public class LivroService {
 
         Set<Autor> autores = buscarAutores(dados.getAutoresIds());
 
+        Editora editora = null;
+        if (dados.getEditoraId() != null) {
+            editora = editoraService.findById(dados.getEditoraId());
+        }
+
         livro.setTitulo(dados.getTitulo());
         livro.setIsbn(dados.getIsbn());
         livro.setAnoPublicacao(dados.getAnoPublicacao());
         livro.setQuantidadeDisponivel(dados.getQuantidadeDisponivel());
         livro.setCategoria(categoria);
         livro.setAutores(autores);
+        livro.setEditora(editora);
 
         return repository.save(livro);
     }

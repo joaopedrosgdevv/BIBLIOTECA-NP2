@@ -15,6 +15,7 @@ public class LivroDTO {
     private Integer anoPublicacao;
     private Integer quantidadeDisponivel;
     private Long categoriaId;
+    private Long editoraId;
 
     // IDs dos autores associados ao livro
     private Set<Long> autoresIds;
