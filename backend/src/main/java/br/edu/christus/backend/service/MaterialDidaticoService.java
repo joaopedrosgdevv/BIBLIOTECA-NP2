@@ -81,6 +81,18 @@ public class MaterialDidaticoService {
         repository.delete(material);
     }
 
+    public List<MaterialDidatico> buscarPorTitulo(String titulo) {
+
+        if (!temTexto(titulo)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "O título para busca é obrigatório"
+            );
+        }
+
+        return repository.findByTituloContainingIgnoreCase(titulo);
+    }
+
     private Categoria buscarCategoria(Long categoriaId) {
         Optional<Categoria> resultado = categoriaRepository.findById(categoriaId);
 

@@ -38,6 +38,16 @@ public class MaterialDidaticoController {
         return service.findAll();
     }
 
+    @Operation(summary = "Busca materiais didáticos pelo título", tags = "Material Didático")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Materiais encontrados (lista vazia se nenhum)"),
+            @ApiResponse(responseCode = "400", description = "O título para busca é obrigatório")
+    })
+    @GetMapping("/buscar")
+    public List<MaterialDidatico> buscarPorTitulo(@RequestParam(required = false) String titulo) {
+        return service.buscarPorTitulo(titulo);
+    }
+
     @Operation(summary = "Consulta um material didático pelo ID", tags = "Material Didático")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Material encontrado"),
