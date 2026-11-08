@@ -11,5 +11,6 @@ public class LivroDTO {
     private Integer anoPublicacao;
     private Integer quantidadeDisponivel;
     private Long categoriaId;
+    private Long editoraId;
 
 }

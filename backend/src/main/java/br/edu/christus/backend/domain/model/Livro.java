@@ -32,4 +32,8 @@ public class Livro {
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "editora_id")
+    private Editora editora;
 }
