@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "tb_livro")
 @Getter
@@ -33,6 +36,16 @@ public class Livro {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
+    // Relacionamento entre livros e autores
+    @ManyToMany
+    @JoinTable(
+            name = "tb_livro_autor",
+            joinColumns = @JoinColumn(name = "livro_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
+    private Set<Autor> autores = new HashSet<>();
+
+    // Relacionamento entre livros e editoras
     @ManyToOne
     @JoinColumn(name = "editora_id")
     private Editora editora;
