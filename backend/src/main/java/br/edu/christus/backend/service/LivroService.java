@@ -2,6 +2,8 @@
 package br.edu.christus.backend.service;
 
 import java.util.List;
+import br.edu.christus.backend.domain.dto.LivroDTO;
+import br.edu.christus.backend.domain.dto.LivroLowDTO;
 import br.edu.christus.backend.domain.model.Categoria;
 import br.edu.christus.backend.domain.model.Livro;
 import br.edu.christus.backend.repository.CategoriaRepository;
@@ -20,10 +22,10 @@ public class LivroService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public Livro create(Livro dados) {
 
-        if (dados.getCategoria() == null ||
-                dados.getCategoria().getId() == null) {
+    public LivroLowDTO create(LivroDTO dados) {
+
+        if (dados.getCategoriaId() == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "A categoria é obrigatória"
@@ -31,14 +33,11 @@ public class LivroService {
         }
 
         Categoria categoria = categoriaRepository
-                .findById(dados.getCategoria().getId())
+                .findById(dados.getCategoriaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Categoria não encontrada"
                 ));
-
-
-        dados.setCategoria(categoria);
 
         if (repository.existsByIsbn(dados.getIsbn())) {
             throw new ResponseStatusException(
@@ -47,8 +46,22 @@ public class LivroService {
             );
         }
 
-        return repository.save(dados);
+        Livro livro = new Livro();
+        livro.setTitulo(dados.getTitulo());
+        livro.setIsbn(dados.getIsbn());
+        livro.setAnoPublicacao(dados.getAnoPublicacao());
+        livro.setQuantidadeDisponivel(dados.getQuantidadeDisponivel());
+        livro.setCategoria(categoria);
 
+        Livro livroSalvo = repository.save(livro);
+
+        LivroLowDTO resposta = new LivroLowDTO();
+        resposta.setId(livroSalvo.getId());
+        resposta.setTitulo(livroSalvo.getTitulo());
+        resposta.setIsbn(livroSalvo.getIsbn());
+        resposta.setCategoriaId(categoria.getId());
+
+        return resposta;
     }
 
 
@@ -65,9 +78,17 @@ public class LivroService {
     }
 
 
-    public Livro update(Long id, Livro dados) {
+
+    public Livro update(Long id, LivroDTO dados) {
 
         Livro livro = findById(id);
+
+        if (dados.getCategoriaId() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "A categoria é obrigatória"
+            );
+        }
 
         if (repository.existsByIsbnAndIdNot(dados.getIsbn(), id)) {
             throw new ResponseStatusException(
@@ -76,16 +97,8 @@ public class LivroService {
             );
         }
 
-        if (dados.getCategoria() == null ||
-                dados.getCategoria().getId() == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "A categoria é obrigatória"
-            );
-        }
-
         Categoria categoria = categoriaRepository
-                .findById(dados.getCategoria().getId())
+                .findById(dados.getCategoriaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Categoria não encontrada"
