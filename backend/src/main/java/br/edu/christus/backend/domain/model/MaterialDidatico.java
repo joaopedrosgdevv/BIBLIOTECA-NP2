@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// Representa materiais de apoio e armazena o endereço dos arquivos.
 @Entity
 @Table(name = "tb_material_didatico")
 @Getter
@@ -31,6 +32,7 @@ public class MaterialDidatico {
 
     private LocalDate dataPublicacao;
 
+    // Cada material pertence a uma categoria; uma categoria pode ter vários materiais.
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MaterialDidaticoRepository extends JpaRepository<MaterialDidatico, Long> {
 
+    // Busca por parte do título, ignorando maiúsculas e minúsculas.
     List<MaterialDidatico> findByTituloContainingIgnoreCase(String titulo);
 
 }

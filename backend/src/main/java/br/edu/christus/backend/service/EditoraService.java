@@ -22,6 +22,7 @@ public class EditoraService {
     @Autowired
     private LivroRepository livroRepository;
 
+    // CADASTRO: valida os dados, verifica CNPJ duplicado e salva a editora.
     public EditoraLowDTO create(EditoraDTO dados) {
 
         validarDados(dados);
@@ -47,10 +48,12 @@ public class EditoraService {
         return resposta;
     }
 
+    // LISTAGEM: retorna todas as editoras cadastradas.
     public List<Editora> findAll() {
         return repository.findAll();
     }
 
+    // CONSULTA: busca pelo ID e retorna 404 se a editora não existir.
     public Editora findById(Long id) {
         Optional<Editora> resultado = repository.findById(id);
 
@@ -64,6 +67,7 @@ public class EditoraService {
         return resultado.get();
     }
 
+    // EDIÇÃO: busca a editora, valida os novos dados e salva as alterações.
     public Editora update(Long id, EditoraDTO dados) {
 
         Editora editora = findById(id);
@@ -82,6 +86,7 @@ public class EditoraService {
         return repository.save(editora);
     }
 
+    // EXCLUSÃO: impede apagar editoras com livros vinculados.
     public void delete(Long id) {
 
         Editora editora = findById(id);
@@ -96,6 +101,7 @@ public class EditoraService {
         repository.delete(editora);
     }
 
+    // Reúne as validações utilizadas no cadastro e na edição.
     private void validarDados(EditoraDTO dados) {
 
         if (!temTexto(dados.getNome())) {
@@ -131,6 +137,7 @@ public class EditoraService {
         }
     }
 
+    // Transfere os campos recebidos no DTO para a entidade.
     private void copiarDados(EditoraDTO dados, Editora editora) {
         editora.setNome(dados.getNome());
         editora.setPaisOrigem(dados.getPaisOrigem());

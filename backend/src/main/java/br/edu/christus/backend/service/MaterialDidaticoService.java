@@ -23,6 +23,7 @@ public class MaterialDidaticoService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    // CADASTRO: valida os dados, busca a categoria, associa ao material e salva.
     public MaterialDidaticoLowDTO create(MaterialDidaticoDTO dados) {
 
         validarDados(dados);
@@ -45,10 +46,12 @@ public class MaterialDidaticoService {
         return resposta;
     }
 
+    // LISTAGEM: retorna todos os materiais cadastrados.
     public List<MaterialDidatico> findAll() {
         return repository.findAll();
     }
 
+    // CONSULTA: busca pelo ID e retorna 404 se o material não existir.
     public MaterialDidatico findById(Long id) {
         Optional<MaterialDidatico> resultado = repository.findById(id);
 
@@ -62,6 +65,7 @@ public class MaterialDidaticoService {
         return resultado.get();
     }
 
+    // EDIÇÃO: valida os novos dados e a categoria antes de atualizar o material.
     public MaterialDidatico update(Long id, MaterialDidaticoDTO dados) {
 
         MaterialDidatico material = findById(id);
@@ -76,11 +80,13 @@ public class MaterialDidaticoService {
         return repository.save(material);
     }
 
+    // EXCLUSÃO: verifica se o material existe antes de apagar.
     public void delete(Long id) {
         MaterialDidatico material = findById(id);
         repository.delete(material);
     }
 
+    // FUNCIONALIDADE EXTRA: valida o título informado e consulta os materiais.
     public List<MaterialDidatico> buscarPorTitulo(String titulo) {
 
         if (!temTexto(titulo)) {
@@ -93,6 +99,7 @@ public class MaterialDidaticoService {
         return repository.findByTituloContainingIgnoreCase(titulo);
     }
 
+    // Busca a categoria informada e retorna 404 se ela não existir.
     private Categoria buscarCategoria(Long categoriaId) {
         Optional<Categoria> resultado = categoriaRepository.findById(categoriaId);
 
@@ -106,6 +113,7 @@ public class MaterialDidaticoService {
         return resultado.get();
     }
 
+    // Valida campos obrigatórios, URL e data de publicação.
     private void validarDados(MaterialDidaticoDTO dados) {
 
         if (!temTexto(dados.getTitulo())) {
@@ -151,6 +159,7 @@ public class MaterialDidaticoService {
         }
     }
 
+    // Transfere os campos simples do DTO para a entidade.
     private void copiarDados(MaterialDidaticoDTO dados, MaterialDidatico material) {
         material.setTitulo(dados.getTitulo());
         material.setDescricao(dados.getDescricao());

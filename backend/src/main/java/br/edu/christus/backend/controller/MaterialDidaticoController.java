@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+// Disponibiliza as operações do CRUD de Materiais Didáticos.
 @RestController
 @RequestMapping("/api/v1/materiais-didaticos")
 public class MaterialDidaticoController {
@@ -43,6 +44,7 @@ public class MaterialDidaticoController {
             @ApiResponse(responseCode = "200", description = "Materiais encontrados (lista vazia se nenhum)"),
             @ApiResponse(responseCode = "400", description = "O título para busca é obrigatório")
     })
+    // Recebe o título pela URL e encaminha a pesquisa ao Service.
     @GetMapping("/buscar")
     public List<MaterialDidatico> buscarPorTitulo(@RequestParam(required = false) String titulo) {
         return service.buscarPorTitulo(titulo);

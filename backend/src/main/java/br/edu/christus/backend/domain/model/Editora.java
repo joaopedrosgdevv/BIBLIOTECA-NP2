@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// Representa as editoras e define os dados armazenados no banco.
 @Entity
 @Table(name = "tb_editora")
 @Getter
@@ -19,6 +20,7 @@ public class Editora {
     @Column(nullable = false, length = 150)
     private String nome;
 
+    // CNPJ opcional, mas único quando informado.
     @Column(unique = true, length = 20)
     private String cnpj;
 

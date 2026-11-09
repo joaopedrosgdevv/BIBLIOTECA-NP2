@@ -2,6 +2,7 @@ package br.edu.christus.backend.domain.dto;
 
 import lombok.Data;
 
+// Recebe os dados enviados no cadastro e na edição de editoras.
 @Data
 public class EditoraDTO {
 
