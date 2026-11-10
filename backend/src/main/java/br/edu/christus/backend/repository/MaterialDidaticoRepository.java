@@ -9,4 +9,7 @@ public interface MaterialDidaticoRepository extends JpaRepository<MaterialDidati
     // Busca por parte do título, ignorando maiúsculas e minúsculas.
     List<MaterialDidatico> findByTituloContainingIgnoreCase(String titulo);
 
+    // FUNCIONALIDADE EXTRA (sugestão de estudo): materiais de uma categoria.
+    List<MaterialDidatico> findByCategoriaId(Long categoriaId);
+
 }
